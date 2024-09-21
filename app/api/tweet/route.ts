@@ -1,6 +1,6 @@
-import db from "@/app/utils/firestore";
-import openai from "@/app/utils/openai";
-import twitterClient from "@/app/utils/twitter";
+import db from "@/utils/firestore";
+import openai from "@/utils/openai";
+import twitterClient from "@/utils/twitter";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
