@@ -4,26 +4,28 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
+        const id = req.nextUrl.searchParams.get("id");
         const state = req.nextUrl.searchParams.get("state");
         const code = req.nextUrl.searchParams.get("code");
 
-        if (!state || !code) return new NextResponse("No Search Params Provided", { status: 400 });
+        if (!id || !state || !code) return new NextResponse("No Search Params Provided", { status: 400 });
 
-        const dbSnapshot = await db.get();
-        const { codeVerifier, state: storedState } = dbSnapshot.data()!;
+        const client = await db.doc(id).get();
+        const { codeVerifier, state: storedState } = client.data()!;
 
         if (state !== storedState) return new NextResponse("Stored token does not match", { status: 400 });
 
         const { accessToken, refreshToken } = await twitterClient.loginWithOAuth2({
             code,
             codeVerifier,
-            redirectUri: `${process.env.HOST}/api/callback`,
+            redirectUri: `${process.env.HOST}/api/callback?id=${id}`,
         });
 
-        await db.set({ accessToken, refreshToken });
+        await db.doc(id).update({ accessToken, refreshToken });
 
         return NextResponse.json({});
-    } catch {
+    } catch (error) {
+        console.log(error);
         return new NextResponse("[CALLBACK_GET] Internal Server Error", { status: 500 });
     }
 }

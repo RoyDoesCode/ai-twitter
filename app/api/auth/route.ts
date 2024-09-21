@@ -4,11 +4,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        const { url, codeVerifier, state } = twitterClient.generateOAuth2AuthLink(`${process.env.HOST}/api/callback`, {
-            scope: ["tweet.read", "tweet.write", "users.read", "offline.access"],
-        });
+        const id = req.nextUrl.searchParams.get("id");
+        if (!id) return new NextResponse("No Client ID Provided", { status: 400 });
 
-        await db.set({ codeVerifier, state });
+        const { url, codeVerifier, state } = twitterClient.generateOAuth2AuthLink(
+            `${process.env.HOST}/api/callback?id=${id}`,
+            {
+                scope: ["tweet.read", "tweet.write", "users.read", "offline.access"],
+            }
+        );
+
+        await db.doc(id).update({ codeVerifier, state });
 
         return NextResponse.redirect(url);
     } catch {
