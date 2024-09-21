@@ -1,36 +1,53 @@
 "use client";
 
-import React from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { COUNTRY_OPTIONS, generateIdFromName } from "./utils/consts";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
+
+import { COUNTRY_OPTIONS, generateIdFromName } from "./utils/consts";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
     industry: z.string().min(1, "Industry is required."),
     woeid: z.string().min(1, "Country is required."),
-    persona: z.string().min(1, "Persona is required."),
+    prompt: z.string().min(1, "Persona is required."),
 });
 
 const ClientForm: React.FC = () => {
+    const { toast } = useToast();
+    const [loading, setLoading] = useState(false);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
             industry: "",
             woeid: "",
-            persona: "",
+            prompt: "",
         },
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        setLoading(true);
+        const id = generateIdFromName(values.name);
+
+        axios
+            .post("/api/clients", { ...values, id })
+            .then(() => toast({ title: "Succefully registered client." }))
+            .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
+            .finally(() => setLoading(false));
+        // Create firestore document
+        // Pass document id param to auth
     }
 
     return (
@@ -96,20 +113,21 @@ const ClientForm: React.FC = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="persona"
+                    name="prompt"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Persona *</FormLabel>
+                            <FormLabel>System prompt *</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="The GPT system prompt" className="h-40" {...field} />
+                                <Textarea className="h-40" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="w-full h-10">
-                    Generate Auth Link
+                <Button type="submit" disabled={loading} className="w-full h-10">
+                    {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+                    Register Client
                 </Button>
             </form>
         </Form>

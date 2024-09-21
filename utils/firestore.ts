@@ -7,6 +7,6 @@ const app =
         ? admin.initializeApp({ credential: admin.credential.cert(serviceAccount) })
         : admin.apps[0];
 
-const db = admin.firestore(app!).doc("tokens/tokens");
+const db = admin.firestore(app!).collection("clients");
 
 export default db;
