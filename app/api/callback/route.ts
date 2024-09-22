@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
         const { accessToken, refreshToken } = await twitterClient.loginWithOAuth2({
             code,
             codeVerifier,
-            redirectUri: `${process.env.HOST}/api/callback?id=${id}`,
+            redirectUri: `${process.env.NEXT_PUBLIC_HOST}/api/callback?id=${id}`,
         });
 
         await db.doc(id).update({ accessToken, refreshToken });

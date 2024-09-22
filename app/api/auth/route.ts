@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
         if (!id) return new NextResponse("No Client ID Provided", { status: 400 });
 
         const { url, codeVerifier, state } = twitterClient.generateOAuth2AuthLink(
-            `${process.env.HOST}/api/callback?id=${id}`,
+            `${process.env.NEXT_PUBLIC_HOST}/api/callback?id=${id}`,
             {
                 scope: ["tweet.read", "tweet.write", "users.read", "offline.access"],
             }

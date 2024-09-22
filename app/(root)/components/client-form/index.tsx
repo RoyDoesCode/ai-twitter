@@ -15,6 +15,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 
 import { COUNTRY_OPTIONS, generateIdFromName } from "./utils/consts";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
@@ -26,6 +27,7 @@ const formSchema = z.object({
 const ClientForm: React.FC = () => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -38,16 +40,14 @@ const ClientForm: React.FC = () => {
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        setLoading(true);
         const id = generateIdFromName(values.name);
+        setLoading(true);
 
         axios
             .post("/api/clients", { ...values, id })
-            .then(() => toast({ title: "Succefully registered client." }))
+            .then(() => router.push(`/link/${id}`))
             .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
             .finally(() => setLoading(false));
-        // Create firestore document
-        // Pass document id param to auth
     }
 
     return (
