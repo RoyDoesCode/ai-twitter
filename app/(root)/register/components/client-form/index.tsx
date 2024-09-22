@@ -45,7 +45,7 @@ const ClientForm: React.FC = () => {
 
         axios
             .post("/api/clients", { ...values, id })
-            .then(() => router.push(`/link/${id}`))
+            .then(() => router.push(`/${id}/link`))
             .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
             .finally(() => setLoading(false));
     }

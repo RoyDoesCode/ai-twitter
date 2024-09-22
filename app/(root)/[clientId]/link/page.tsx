@@ -3,12 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { CheckIcon, CopyIcon } from "@radix-ui/react-icons";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-export default function LinkPage({ params }: { params: { clientId: string } }) {
+export default function LinkPage() {
+    const { clientId } = useParams();
     const { toast } = useToast();
     const [copied, setCopied] = useState(false);
-    const link = useMemo(() => `${process.env.NEXT_PUBLIC_HOST}/api/auth?id=${params.clientId}`, []);
+    const link = useMemo(() => `${process.env.NEXT_PUBLIC_HOST}/api/auth?id=${clientId}`, []);
 
     useEffect(() => {
         copied && setTimeout(() => setCopied(false), 2000);
@@ -23,7 +25,7 @@ export default function LinkPage({ params }: { params: { clientId: string } }) {
     return (
         <main className="flex flex-col h-screen items-center justify-center gap-4">
             <h1 className="text-2xl font-bold">Client Auth Link:</h1>
-            <div className="relative pr-14 pl-6 py-3 bg-secondary rounded-xl border border-input">
+            <div className="relative pr-14 pl-6 py-3 min-w-[500px] text-center bg-secondary rounded-xl border border-input">
                 <p>{link}</p>
                 <Button
                     size="icon"
