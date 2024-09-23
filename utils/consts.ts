@@ -1,4 +1,4 @@
-import woeid from "@/utils/woeid.json";
+import woeid from "./woeid.json";
 
 export const COUNTRY_OPTIONS = woeid.filter(({ placeType }) => placeType.name === "Country");
 

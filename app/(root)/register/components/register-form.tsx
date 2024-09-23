@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,12 +11,10 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { COUNTRY_OPTIONS, generateIdFromName } from "@/utils/consts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
-
-import { COUNTRY_OPTIONS, generateIdFromName } from "./utils/consts";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
@@ -24,7 +23,7 @@ const formSchema = z.object({
     prompt: z.string().min(1, "Persona is required."),
 });
 
-const ClientForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -134,4 +133,4 @@ const ClientForm: React.FC = () => {
     );
 };
 
-export default ClientForm;
+export default RegisterForm;

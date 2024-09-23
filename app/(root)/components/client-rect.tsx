@@ -1,9 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Client } from "../utils/types";
-import React from "react";
 import { useRouter } from "next/navigation";
+import React from "react";
+
+import { Button } from "@/components/ui/button";
+import { Client } from "@/utils/types";
 
 const ClientRect: React.FC<Client> = ({ id, name }) => {
     const router = useRouter();
