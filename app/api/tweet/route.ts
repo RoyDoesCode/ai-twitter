@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         if (!id) return new NextResponse("No Client ID Provided", { status: 400 });
 
         const client = await db.doc(id).get();
-        const { refreshToken } = client.data()!;
+        const { refreshToken, prompt } = client.data()!;
 
         const {
             client: refreshedClient,
@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
         // const gptResponse = await openai.chat.completions.create({
         //     model: "gpt-4o-mini",
         //     messages: [
-        //         { role: "system", content: "" },
-        //         { role: "user", content: "" },
+        //         { role: "system", content: prompt },
+        //         { role: "user", content: "Create a tweet" },
         //     ],
         //     max_tokens: 128
         // });

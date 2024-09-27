@@ -1,7 +1,6 @@
 "use client";
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +15,7 @@ import { COUNTRY_OPTIONS } from "@/utils/consts";
 import { Client } from "@/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
@@ -27,7 +27,7 @@ const formSchema = z.object({
 const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
+    const queryClient = useQueryClient();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -46,14 +46,14 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
 
         axios
             .patch(`/api/clients/${id}`, values)
-            .then(() => router.push("/"))
+            .then(() => queryClient.refetchQueries({ queryKey: ["get-client"] }))
             .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
             .finally(() => setLoading(false));
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[640px] p-8 space-y-4 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[560px] p-8 space-y-4 w-full">
                 <FormField
                     control={form.control}
                     name="name"
@@ -125,7 +125,7 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
                 />
                 <Button type="submit" disabled={disabled} className="w-full h-10">
                     {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-                    Update
+                    Update settings
                 </Button>
             </form>
         </Form>

@@ -16,6 +16,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         const data = await req.json();
         const doc = await db.doc(params.id).update(data);
 
+        // TODO: Delete existing schedule
+        // If data.active -> create new schedule
+
         return NextResponse.json(doc);
     } catch {
         return new NextResponse("[CLIENT_GET] Internal Server Error", { status: 500 });
