@@ -3,12 +3,9 @@ import openai from "@/utils/openai";
 import twitterClient from "@/utils/twitter";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
     try {
-        const { id } = await req.json();
-        if (!id) return new NextResponse("No Client ID Provided", { status: 400 });
-
-        const client = await db.doc(id).get();
+        const client = await db.doc(params.id).get();
         const { refreshToken, prompt } = client.data()!;
 
         const {
@@ -17,7 +14,7 @@ export async function POST(req: NextRequest) {
             refreshToken: newRefreshToken,
         } = await twitterClient.refreshOAuth2Token(refreshToken);
 
-        await db.doc(id).update({ accessToken, refreshToken: newRefreshToken });
+        await db.doc(params.id).update({ accessToken, refreshToken: newRefreshToken });
 
         // const gptResponse = await openai.chat.completions.create({
         //     model: "gpt-4o-mini",
@@ -31,7 +28,8 @@ export async function POST(req: NextRequest) {
         // if (!tweet) throw new Error();
         const tweet = "HELLO!";
 
-        const { data } = await refreshedClient.v2.tweet(tweet);
+        // const { data } = await refreshedClient.v2.tweet(tweet);
+        const data = { id: params.id, tweet };
 
         return NextResponse.json(data);
     } catch {

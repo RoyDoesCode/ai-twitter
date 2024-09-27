@@ -7,6 +7,7 @@ export type Client = {
     startHour?: Date;
     interval?: number;
     active?: boolean;
+    scheduleId?: string;
     codeVerifier?: string;
     state?: string;
     accessToken?: string;
