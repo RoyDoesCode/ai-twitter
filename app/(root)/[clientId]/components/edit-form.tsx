@@ -59,7 +59,7 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Client's name *</FormLabel>
+                            <FormLabel>Client&apos;s name *</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -77,7 +77,7 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
                     name="industry"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Client's industry *</FormLabel>
+                            <FormLabel>Client&apos;s industry *</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>

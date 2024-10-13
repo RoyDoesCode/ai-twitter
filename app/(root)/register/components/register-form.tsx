@@ -57,7 +57,7 @@ const RegisterForm: React.FC = () => {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Client's name *</FormLabel>
+                            <FormLabel>Client&apos;s name *</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -78,7 +78,7 @@ const RegisterForm: React.FC = () => {
                     name="industry"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Client's industry *</FormLabel>
+                            <FormLabel>Client&apos;s industry *</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
