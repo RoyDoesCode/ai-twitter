@@ -3,7 +3,7 @@ import openai from "@/utils/openai";
 import twitterClient from "@/utils/twitter";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
     try {
         const client = await db.doc(params.id).get();
         const { refreshToken, prompt } = client.data()!;
@@ -16,20 +16,19 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
         await db.doc(params.id).update({ accessToken, refreshToken: newRefreshToken });
 
-        // const gptResponse = await openai.chat.completions.create({
-        //     model: "gpt-4o-mini",
-        //     messages: [
-        //         { role: "system", content: prompt },
-        //         { role: "user", content: "Create a tweet" },
-        //     ],
-        //     max_tokens: 128
-        // });
-        // const tweet = gptResponse.choices[0].message.content;
-        // if (!tweet) throw new Error();
-        const tweet = "HELLO!";
+        const gptResponse = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                { role: "system", content: prompt },
+                { role: "user", content: "Create a tweet" },
+            ],
+            max_tokens: 512,
+        });
 
-        // const { data } = await refreshedClient.v2.tweet(tweet);
-        const data = { id: params.id, tweet };
+        const tweet = gptResponse.choices[0].message.content;
+        if (!tweet) throw new Error();
+
+        const { data } = await refreshedClient.v2.tweet(tweet.replace(/^['"]+|['"]+$/g, ""));
 
         return NextResponse.json(data);
     } catch {

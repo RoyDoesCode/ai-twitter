@@ -12,6 +12,7 @@ export default function Home() {
     const { data: clients, isFetching } = useQuery<Client[]>({
         queryKey: ["get-clients"],
         queryFn: async () => (await axios.get("/api/clients")).data,
+        refetchOnWindowFocus: false,
         gcTime: 0,
     });
 

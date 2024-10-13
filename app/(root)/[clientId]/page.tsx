@@ -16,6 +16,7 @@ export default function ClientPage() {
     const { data: client, isFetching } = useQuery<Client>({
         queryKey: ["get-client"],
         queryFn: async () => (await axios.get(`/api/clients/${clientId}`)).data,
+        refetchOnWindowFocus: false,
         gcTime: 0,
     });
 
