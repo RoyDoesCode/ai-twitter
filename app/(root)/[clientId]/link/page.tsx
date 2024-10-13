@@ -10,7 +10,7 @@ export default function LinkPage() {
     const { clientId } = useParams();
     const { toast } = useToast();
     const [copied, setCopied] = useState(false);
-    const link = useMemo(() => `${process.env.NEXT_PUBLIC_HOST}/api/auth?id=${clientId}`, []);
+    const link = useMemo(() => `${process.env.NEXT_PUBLIC_HOST}/api/auth?id=${clientId}`, [clientId]);
 
     useEffect(() => {
         copied && setTimeout(() => setCopied(false), 2000);

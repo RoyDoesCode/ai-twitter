@@ -1,7 +1,7 @@
 import db from "@/utils/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     try {
         const { docs } = await db.get();
         const clients = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
