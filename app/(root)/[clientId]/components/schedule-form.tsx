@@ -15,7 +15,6 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
-    startHour: z.date({ message: "Start date is required" }),
     cron: z.string().min(1, "Cron expression is required"),
     active: z.boolean(),
 });
