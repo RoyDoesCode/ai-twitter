@@ -4,8 +4,7 @@ export type Client = {
     woeid: number;
     industry: string;
     prompt: string;
-    startHour?: Date;
-    interval?: number;
+    cron?: string;
     active?: boolean;
     scheduleId?: string;
     codeVerifier?: string;

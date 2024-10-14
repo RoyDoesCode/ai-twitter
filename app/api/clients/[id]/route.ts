@@ -1,7 +1,6 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-import { convertHoursToCron } from "@/utils/consts";
 import db from "@/utils/firestore";
 import { Client } from "@/utils/types";
 
@@ -24,10 +23,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
         if (data.active) {
             const doc = await db.doc(params.id).get();
-            const { interval, startHour } = doc.data() as Client;
-            if (!interval || !startHour) return new NextResponse("Cron not set", { status: 400 });
+            const { cron } = doc.data() as Client;
+            if (!cron) return new NextResponse("Cron not set", { status: 400 });
 
-            const cron = convertHoursToCron(interval, new Date(startHour));
             await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/schedules/${params.id}`, {
                 cron,
             });

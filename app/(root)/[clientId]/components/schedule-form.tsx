@@ -16,11 +16,11 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
     startHour: z.date({ message: "Start date is required" }),
-    interval: z.string().min(1, "Interval is required"),
+    cron: z.string().min(1, "Cron expression is required"),
     active: z.boolean(),
 });
 
-const ScheduleForm: React.FC<Client> = ({ id, startHour, interval, active }) => {
+const ScheduleForm: React.FC<Client> = ({ id, cron, active }) => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
     const queryClient = useQueryClient();
@@ -28,22 +28,18 @@ const ScheduleForm: React.FC<Client> = ({ id, startHour, interval, active }) => 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            startHour: new Date(startHour || new Date()),
-            interval: interval?.toString() || "",
+            cron,
             active,
         },
     });
 
-    const disabled =
-        loading ||
-        JSON.stringify(form.getValues()) ===
-            JSON.stringify({ startHour, interval: interval?.toString() || "", active });
+    const disabled = loading || JSON.stringify(form.getValues()) === JSON.stringify({ cron, active });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
 
         axios
-            .patch(`/api/clients/${id}`, { ...values, interval: parseFloat(values.interval) })
+            .patch(`/api/clients/${id}`, values)
             .then(() => queryClient.refetchQueries({ queryKey: ["get-client"] }))
             .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
             .finally(() => setLoading(false));
@@ -58,25 +54,12 @@ const ScheduleForm: React.FC<Client> = ({ id, startHour, interval, active }) => 
                 <div className="space-y-4">
                     <FormField
                         control={form.control}
-                        name="startHour"
+                        name="cron"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Start hour *</FormLabel>
+                                <FormLabel>Cron Expression *</FormLabel>
                                 <FormControl>
-                                    <TimePicker {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="interval"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Interval (hours) *</FormLabel>
-                                <FormControl>
-                                    <Input {...field} type="number" />
+                                    <Input {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
