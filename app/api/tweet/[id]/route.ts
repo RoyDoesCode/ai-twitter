@@ -36,7 +36,7 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
         const { data } = await refreshedClient.v2.tweet(tweet.replace(/^['"]+|['"]+$/g, ""));
 
         return NextResponse.json(data);
-    } catch {
-        return new NextResponse("[TWEET_POST] Internal Server Error", { status: 500 });
+    } catch (error) {
+        return new NextResponse(`[TWEET_POST] ${error}`, { status: 500 });
     }
 }
