@@ -19,18 +19,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         const data: Partial<Client> = await req.json();
         const res = await db.doc(params.id).update(data);
 
-        await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/schedules/${params.id}`);
-
-        if (data.active) {
-            const doc = await db.doc(params.id).get();
-            const { cron } = doc.data() as Client;
-            if (!cron) return new NextResponse("Cron not set", { status: 400 });
-
-            await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/schedules/${params.id}`, {
-                cron,
-            });
-        }
-
         return NextResponse.json(res);
     } catch {
         return new NextResponse("[CLIENT_PATCH] Internal Server Error", { status: 500 });
