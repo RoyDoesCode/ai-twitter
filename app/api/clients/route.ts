@@ -14,9 +14,9 @@ export async function GET(_req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     try {
-        const { id, name, industry, woeid, prompt } = await req.json();
+        const { id, name, industry, woeid, systemPrompt, userPrompt } = await req.json();
 
-        const response = await db.doc(id).set({ name, industry, woeid: parseInt(woeid), prompt });
+        const response = await db.doc(id).set({ name, industry, woeid: parseInt(woeid), systemPrompt, userPrompt });
 
         return NextResponse.json(response);
     } catch {

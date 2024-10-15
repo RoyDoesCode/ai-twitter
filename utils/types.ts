@@ -3,7 +3,8 @@ export type Client = {
     name: string;
     woeid: number;
     industry: string;
-    prompt: string;
+    systemPrompt: string;
+    userPrompt: string;
     cron?: string;
     active?: boolean;
     scheduleId?: string;

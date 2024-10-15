@@ -21,7 +21,7 @@ export default function ClientPage() {
     });
 
     return (
-        <main className="flex flex-col h-screen items-center justify-center gap-8 pt-64 md:pt-0">
+        <main className="flex flex-col h-screen items-center justify-center gap-8 pt-14">
             {isFetching && <Loader />}
             {client && !isFetching && (
                 <>

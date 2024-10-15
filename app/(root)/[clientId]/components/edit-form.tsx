@@ -21,10 +21,11 @@ const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
     industry: z.string().min(1, "Industry is required."),
     woeid: z.string().min(1, "Country is required."),
-    prompt: z.string().min(1, "Persona is required."),
+    systemPrompt: z.string().min(1, "System prompt is required."),
+    userPrompt: z.string().min(1, "User prompt is required."),
 });
 
-const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
+const EditForm: React.FC<Client> = ({ id, name, industry, woeid, systemPrompt, userPrompt }) => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
     const queryClient = useQueryClient();
@@ -35,11 +36,14 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
             name,
             industry,
             woeid: woeid.toString(),
-            prompt,
+            systemPrompt,
+            userPrompt,
         },
     });
 
-    const disabled = loading || JSON.stringify(form.getValues()) === JSON.stringify({ name, industry, woeid, prompt });
+    const disabled =
+        loading ||
+        JSON.stringify(form.getValues()) === JSON.stringify({ name, industry, woeid, systemPrompt, userPrompt });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
@@ -111,12 +115,26 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, prompt }) => {
                 />
                 <FormField
                     control={form.control}
-                    name="prompt"
+                    name="systemPrompt"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>System prompt *</FormLabel>
                             <FormControl>
                                 <Textarea className="h-40" {...field} />
+                            </FormControl>
+                            <FormDescription />
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="userPrompt"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>User prompt *</FormLabel>
+                            <FormControl>
+                                <Textarea className="h-20" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

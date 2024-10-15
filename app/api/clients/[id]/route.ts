@@ -1,10 +1,9 @@
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 import db from "@/utils/firestore";
 import { Client } from "@/utils/types";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
     try {
         const doc = await db.doc(params.id).get();
 

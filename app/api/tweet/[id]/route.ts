@@ -1,12 +1,17 @@
 import db from "@/utils/firestore";
 import openai from "@/utils/openai";
 import twitterClient from "@/utils/twitter";
+import { Client } from "@/utils/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
     try {
         const client = await db.doc(params.id).get();
-        const { refreshToken, prompt } = client.data()!;
+        const { refreshToken, systemPrompt, userPrompt } = client.data()! as Client;
+
+        if (!refreshToken) {
+            return new NextResponse("No refresh token.", { status: 400 });
+        }
 
         const {
             client: refreshedClient,
@@ -19,10 +24,10 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
         const gptResponse = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
-                { role: "system", content: prompt },
-                { role: "user", content: "Create a tweet" },
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt },
             ],
-            max_tokens: 512,
+            max_tokens: 1024,
         });
 
         const tweet = gptResponse.choices[0].message.content;

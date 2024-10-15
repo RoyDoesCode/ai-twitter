@@ -20,7 +20,8 @@ const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
     industry: z.string().min(1, "Industry is required."),
     woeid: z.string().min(1, "Country is required."),
-    prompt: z.string().min(1, "Persona is required."),
+    systemPrompt: z.string().min(1, "System prompt is required."),
+    userPrompt: z.string().min(1, "User prompt is required."),
 });
 
 const RegisterForm: React.FC = () => {
@@ -34,7 +35,8 @@ const RegisterForm: React.FC = () => {
             name: "",
             industry: "",
             woeid: "",
-            prompt: "",
+            systemPrompt: "",
+            userPrompt: "",
         },
     });
 
@@ -112,12 +114,26 @@ const RegisterForm: React.FC = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="prompt"
+                    name="systemPrompt"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>System prompt *</FormLabel>
                             <FormControl>
                                 <Textarea className="h-40" {...field} />
+                            </FormControl>
+                            <FormDescription />
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="userPrompt"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>User prompt *</FormLabel>
+                            <FormControl>
+                                <Textarea className="h-20" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
