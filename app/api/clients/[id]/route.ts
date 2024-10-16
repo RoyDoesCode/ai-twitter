@@ -20,14 +20,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         const res = await db.doc(params.id).update(data);
         const doc = (await db.doc(params.id).get()).data();
 
+        await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/schedules/${params.id}`);
+
         if (doc?.active) {
             if (!doc.cron) return new NextResponse("Cron not set.", { status: 400 });
 
             await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/schedules/${params.id}`, {
                 cron: doc.cron,
             });
-        } else {
-            await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/schedules/${params.id}`);
         }
 
         return NextResponse.json(res);
