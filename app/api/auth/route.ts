@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
         const { url, codeVerifier, state } = twitterClient.generateOAuth2AuthLink(
             `${process.env.NEXT_PUBLIC_HOST}/api/callback?id=${id}`,
             {
-                scope: ["tweet.read", "tweet.write", "users.read", "offline.access"],
+                scope: ["tweet.read", "tweet.write", "users.read", "offline.access", "tweet.moderate.write"],
             }
         );
 

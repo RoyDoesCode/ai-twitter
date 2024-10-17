@@ -37,6 +37,7 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
 
         return NextResponse.json(data);
     } catch (error) {
+        console.log(error);
         return new NextResponse(`[TWEET_POST] ${error}`, { status: 500 });
     }
 }
