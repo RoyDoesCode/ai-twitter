@@ -18,8 +18,6 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
-    industry: z.string().min(1, "Industry is required."),
-    woeid: z.string().min(1, "Country is required."),
     systemPrompt: z.string().min(1, "System prompt is required."),
     userPrompt: z.string().min(1, "User prompt is required."),
 });
@@ -33,8 +31,6 @@ const RegisterForm: React.FC = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            industry: "",
-            woeid: "",
             systemPrompt: "",
             userPrompt: "",
         },
@@ -71,43 +67,6 @@ const RegisterForm: React.FC = () => {
                                     </span>
                                 </FormDescription>
                             )}
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="industry"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Client&apos;s industry *</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="woeid"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Country *</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select the client's country for getting trends" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {COUNTRY_OPTIONS.map(({ woeid, name }) => (
-                                        <SelectItem key={woeid} value={woeid.toString()}>
-                                            {name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
                             <FormMessage />
                         </FormItem>
                     )}

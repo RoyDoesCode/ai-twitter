@@ -19,13 +19,11 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
     name: z.string().min(1, "Name is required."),
-    industry: z.string().min(1, "Industry is required."),
-    woeid: z.string().min(1, "Country is required."),
     systemPrompt: z.string().min(1, "System prompt is required."),
     userPrompt: z.string().min(1, "User prompt is required."),
 });
 
-const EditForm: React.FC<Client> = ({ id, name, industry, woeid, systemPrompt, userPrompt }) => {
+const EditForm: React.FC<Client> = ({ id, name, systemPrompt, userPrompt }) => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
     const queryClient = useQueryClient();
@@ -34,16 +32,12 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, systemPrompt, u
         resolver: zodResolver(formSchema),
         defaultValues: {
             name,
-            industry,
-            woeid: woeid.toString(),
             systemPrompt,
             userPrompt,
         },
     });
 
-    const disabled =
-        loading ||
-        JSON.stringify(form.getValues()) === JSON.stringify({ name, industry, woeid, systemPrompt, userPrompt });
+    const disabled = loading || JSON.stringify(form.getValues()) === JSON.stringify({ name, systemPrompt, userPrompt });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
@@ -72,43 +66,6 @@ const EditForm: React.FC<Client> = ({ id, name, industry, woeid, systemPrompt, u
                                     Client ID: <span className="text-foreground font-medium">{id}</span>
                                 </FormDescription>
                             )}
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="industry"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Client&apos;s industry *</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="woeid"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Country *</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select the client's country for getting trends" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {COUNTRY_OPTIONS.map(({ woeid, name }) => (
-                                        <SelectItem key={woeid} value={woeid.toString()}>
-                                            {name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
                             <FormMessage />
                         </FormItem>
                     )}
