@@ -30,10 +30,10 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
             max_tokens: 1024,
         });
 
-        const tweet = gptResponse.choices[0].message.content;
+        const tweet = gptResponse.choices[0].message.content?.replace(/^['"]+|['"]+$/g, "");
         if (!tweet) throw new Error();
 
-        const { data } = await refreshedClient.v2.tweet(tweet.replace(/^['"]+|['"]+$/g, ""));
+        const { data } = await refreshedClient.v2.tweet(tweet);
 
         return NextResponse.json(data);
     } catch (error) {
