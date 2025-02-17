@@ -6,12 +6,18 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { COUNTRY_OPTIONS } from "@/utils/consts";
 import { Client } from "@/utils/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -37,7 +43,9 @@ const EditForm: React.FC<Client> = ({ id, name, systemPrompt, userPrompt }) => {
         },
     });
 
-    const disabled = loading || JSON.stringify(form.getValues()) === JSON.stringify({ name, systemPrompt, userPrompt });
+    const disabled =
+        loading ||
+        JSON.stringify(form.getValues()) === JSON.stringify({ name, systemPrompt, userPrompt });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
@@ -45,13 +53,18 @@ const EditForm: React.FC<Client> = ({ id, name, systemPrompt, userPrompt }) => {
         axios
             .patch(`/api/clients/${id}`, values)
             .then(() => queryClient.refetchQueries({ queryKey: ["get-client"] }))
-            .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
+            .catch(() =>
+                toast({ title: "There was an error with your request.", variant: "destructive" })
+            )
             .finally(() => setLoading(false));
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[560px] p-8 space-y-4 w-full">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="max-w-[560px] p-8 space-y-4 w-full"
+            >
                 <FormField
                     control={form.control}
                     name="name"
@@ -63,7 +76,8 @@ const EditForm: React.FC<Client> = ({ id, name, systemPrompt, userPrompt }) => {
                             </FormControl>
                             {field.value && (
                                 <FormDescription>
-                                    Client ID: <span className="text-foreground font-medium">{id}</span>
+                                    Client ID:{" "}
+                                    <span className="text-foreground font-medium">{id}</span>
                                 </FormDescription>
                             )}
                             <FormMessage />

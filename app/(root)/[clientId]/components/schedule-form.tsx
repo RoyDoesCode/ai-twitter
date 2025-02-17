@@ -4,8 +4,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { TimePicker } from "@/components/ui/time-picker";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
@@ -32,7 +38,8 @@ const ScheduleForm: React.FC<Client> = ({ id, cron, active }) => {
         },
     });
 
-    const disabled = loading || JSON.stringify(form.getValues()) === JSON.stringify({ cron, active });
+    const disabled =
+        loading || JSON.stringify(form.getValues()) === JSON.stringify({ cron, active });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
@@ -40,7 +47,9 @@ const ScheduleForm: React.FC<Client> = ({ id, cron, active }) => {
         axios
             .patch(`/api/clients/${id}`, values)
             .then(() => queryClient.refetchQueries({ queryKey: ["get-client"] }))
-            .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
+            .catch(() =>
+                toast({ title: "There was an error with your request.", variant: "destructive" })
+            )
             .finally(() => setLoading(false));
     }
 
@@ -71,7 +80,10 @@ const ScheduleForm: React.FC<Client> = ({ id, cron, active }) => {
                             <FormItem className="flex flex-col">
                                 <FormLabel>Active</FormLabel>
                                 <FormControl>
-                                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                                    <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
                                 </FormControl>
                             </FormItem>
                         )}

@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
+
 import db from "@/utils/firestore";
 import twitterClient from "@/utils/twitter";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
@@ -8,12 +9,14 @@ export async function GET(req: NextRequest) {
         const state = req.nextUrl.searchParams.get("state");
         const code = req.nextUrl.searchParams.get("code");
 
-        if (!id || !state || !code) return new NextResponse("No Search Params Provided", { status: 400 });
+        if (!id || !state || !code)
+            return new NextResponse("No Search Params Provided", { status: 400 });
 
         const client = await db.doc(id).get();
         const { codeVerifier, state: storedState } = client.data()!;
 
-        if (state !== storedState) return new NextResponse("Stored token does not match", { status: 400 });
+        if (state !== storedState)
+            return new NextResponse("Stored token does not match", { status: 400 });
 
         const { accessToken, refreshToken } = await twitterClient.loginWithOAuth2({
             code,

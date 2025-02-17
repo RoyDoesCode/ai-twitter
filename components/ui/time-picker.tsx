@@ -1,7 +1,7 @@
-import { Input } from "@/components/ui/input";
+import React from "react";
 
+import { Input } from "@/components/ui/input";
 import { cn } from "@/utils/helpers";
-import React, { HTMLAttributes } from "react";
 
 /**
  * regular expression to check for valid hour format (01-23)
@@ -26,7 +26,10 @@ export function isValidMinuteOrSecond(value: string) {
 
 type GetValidNumberConfig = { max: number; min?: number; loop?: boolean };
 
-export function getValidNumber(value: string, { max, min = 0, loop = false }: GetValidNumberConfig) {
+export function getValidNumber(
+    value: string,
+    { max, min = 0, loop = false }: GetValidNumberConfig
+) {
     let numericValue = parseInt(value, 10);
 
     if (!isNaN(numericValue)) {
@@ -248,7 +251,8 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
              * The second entered digit will break the condition and the value will be set to 10-12.
              */
             if (picker === "12hours") {
-                if (flag && calculatedValue.slice(1, 2) === "1" && prevIntKey === "0") return "0" + key;
+                if (flag && calculatedValue.slice(1, 2) === "1" && prevIntKey === "0")
+                    return "0" + key;
             }
 
             return !flag ? "0" + key : calculatedValue.slice(1, 2) + key;
@@ -309,33 +313,35 @@ export interface TimePickerProps {
     onChange: (value: Date | undefined) => void;
 }
 
-const TimePicker = React.forwardRef<HTMLInputElement, TimePickerProps>(({ value, onChange }, ref) => {
-    const minuteRef = React.useRef<HTMLInputElement>(null);
-    const hourRef = React.useRef<HTMLInputElement>(null);
+const TimePicker = React.forwardRef<HTMLInputElement, TimePickerProps>(
+    ({ value, onChange }, ref) => {
+        const minuteRef = React.useRef<HTMLInputElement>(null);
+        const hourRef = React.useRef<HTMLInputElement>(null);
 
-    return (
-        <div ref={ref} className="flex items-end gap-2">
-            <div className="grid gap-1 text-center">
-                <TimePickerInput
-                    ref={hourRef}
-                    picker="hours"
-                    date={value}
-                    setDate={onChange}
-                    onRightFocus={() => minuteRef.current?.focus()}
-                />
+        return (
+            <div ref={ref} className="flex items-end gap-2">
+                <div className="grid gap-1 text-center">
+                    <TimePickerInput
+                        ref={hourRef}
+                        picker="hours"
+                        date={value}
+                        setDate={onChange}
+                        onRightFocus={() => minuteRef.current?.focus()}
+                    />
+                </div>
+                <div className="grid gap-1 text-center">
+                    <TimePickerInput
+                        ref={minuteRef}
+                        picker="minutes"
+                        date={value}
+                        setDate={onChange}
+                        onLeftFocus={() => hourRef.current?.focus()}
+                    />
+                </div>
             </div>
-            <div className="grid gap-1 text-center">
-                <TimePickerInput
-                    ref={minuteRef}
-                    picker="minutes"
-                    date={value}
-                    setDate={onChange}
-                    onLeftFocus={() => hourRef.current?.focus()}
-                />
-            </div>
-        </div>
-    );
-});
+        );
+    }
+);
 TimePicker.displayName = "TimePicker";
 
 export { TimePickerInput, TimePicker };

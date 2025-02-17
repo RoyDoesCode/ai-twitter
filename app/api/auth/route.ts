@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
+
 import db from "@/utils/firestore";
 import twitterClient from "@/utils/twitter";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {

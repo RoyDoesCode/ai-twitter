@@ -7,12 +7,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { COUNTRY_OPTIONS, generateIdFromName } from "@/utils/consts";
+import { generateIdFromName } from "@/utils/consts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
@@ -43,13 +50,18 @@ const RegisterForm: React.FC = () => {
         axios
             .post("/api/clients", { ...values, id })
             .then(() => router.push(`/${id}/link`))
-            .catch(() => toast({ title: "There was an error with your request.", variant: "destructive" }))
+            .catch(() =>
+                toast({ title: "There was an error with your request.", variant: "destructive" })
+            )
             .finally(() => setLoading(false));
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[640px] p-8 space-y-4 w-full">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="max-w-[640px] p-8 space-y-4 w-full"
+            >
                 <FormField
                     control={form.control}
                     name="name"

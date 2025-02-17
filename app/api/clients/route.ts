@@ -1,5 +1,6 @@
-import db from "@/utils/firestore";
 import { NextRequest, NextResponse } from "next/server";
+
+import db from "@/utils/firestore";
 
 export async function GET(_req: NextRequest) {
     try {

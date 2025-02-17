@@ -1,16 +1,20 @@
 "use client";
 
+import { useParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { CheckIcon, CopyIcon } from "@radix-ui/react-icons";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
 
 export default function LinkPage() {
     const { clientId } = useParams();
     const { toast } = useToast();
     const [copied, setCopied] = useState(false);
-    const link = useMemo(() => `${process.env.NEXT_PUBLIC_HOST}/api/auth?id=${clientId}`, [clientId]);
+    const link = useMemo(
+        () => `${process.env.NEXT_PUBLIC_HOST}/api/auth?id=${clientId}`,
+        [clientId]
+    );
 
     useEffect(() => {
         copied && setTimeout(() => setCopied(false), 2000);

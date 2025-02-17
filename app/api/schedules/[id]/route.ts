@@ -38,7 +38,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     try {
         const doc = await db.doc(params.id).get();
         const { scheduleId } = doc.data() as Client;
-        if (!scheduleId) return NextResponse.json({ message: "No schedule exists for this client." });
+        if (!scheduleId)
+            return NextResponse.json({ message: "No schedule exists for this client." });
 
         const response = await axios.delete(`https://api.mergent.co/v2/schedules/${scheduleId}`, {
             headers: {

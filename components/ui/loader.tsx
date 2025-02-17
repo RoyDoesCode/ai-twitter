@@ -1,5 +1,6 @@
-import { ReloadIcon } from "@radix-ui/react-icons";
 import React from "react";
+
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const Loader: React.FC = () => {
     return (
