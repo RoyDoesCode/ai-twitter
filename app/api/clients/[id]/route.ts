@@ -1,7 +1,7 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-import db from "@/utils/firestore";
+import db from "@/lib/firestore";
 import { Client } from "@/utils/types";
 
 export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {

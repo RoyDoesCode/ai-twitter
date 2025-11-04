@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import db from "@/utils/firestore";
-import openai from "@/utils/openai";
-import twitterClient from "@/utils/twitter";
+import db from "@/lib/firestore";
+import openai from "@/lib/openai";
+import twitterClient from "@/lib/twitter";
 import { Client } from "@/utils/types";
 
 export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
