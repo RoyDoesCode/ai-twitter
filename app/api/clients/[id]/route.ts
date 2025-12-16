@@ -31,7 +31,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         }
 
         return NextResponse.json(res);
-    } catch {
-        return new NextResponse("[CLIENT_PATCH] Internal Server Error", { status: 500 });
+    } catch (error: any) {
+        return new NextResponse(error.message, { status: 500 });
     }
 }

@@ -8,8 +8,8 @@ export async function GET(_req: NextRequest) {
         const clients = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
         return NextResponse.json(clients);
-    } catch {
-        return new NextResponse("[CLIENTS_GET] Internal Server Error", { status: 500 });
+    } catch (error: any) {
+        return new NextResponse(error.message, { status: 500 });
     }
 }
 

@@ -51,7 +51,8 @@ export async function DELETE(_: NextRequest, { params }: { params: { id: string 
         });
 
         return NextResponse.json({ ok: true });
-    } catch {
+    } catch (error: any) {
+        console.log(error.message);
         return new NextResponse("[SCHEDULE_DELETE] Internal Server Error", { status: 500 });
     }
 }
