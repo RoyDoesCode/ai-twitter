@@ -3,6 +3,28 @@ import openai from "@/lib/openai";
 import twitterClient from "@/lib/twitter";
 import { Client } from "@/utils/types";
 
+function formatXError(error: unknown) {
+    if (error && typeof error === "object") {
+        const xError = error as {
+            code?: number;
+            data?: unknown;
+            errors?: unknown;
+            message?: string;
+            rateLimit?: unknown;
+        };
+
+        return JSON.stringify({
+            code: xError.code,
+            message: xError.message,
+            data: xError.data,
+            errors: xError.errors,
+            rateLimit: xError.rateLimit,
+        });
+    }
+
+    return String(error);
+}
+
 export async function postTweetForClient(clientId: string) {
     const client = await db.doc(clientId).get();
     const data = client.data() as Client | undefined;
@@ -17,11 +39,11 @@ export async function postTweetForClient(clientId: string) {
         throw new Error(`Client ${clientId} has no refresh token.`);
     }
 
-    const {
-        client: refreshedClient,
-        accessToken,
-        refreshToken: newRefreshToken,
-    } = await twitterClient.refreshOAuth2Token(refreshToken);
+    const { client: refreshedClient, accessToken, refreshToken: newRefreshToken } = await twitterClient
+        .refreshOAuth2Token(refreshToken)
+        .catch((error) => {
+            throw new Error(`X token refresh failed for client ${clientId}: ${formatXError(error)}`);
+        });
 
     await db.doc(clientId).update({ accessToken, refreshToken: newRefreshToken });
 
@@ -47,7 +69,9 @@ export async function postTweetForClient(clientId: string) {
         throw new Error(`Generated tweet is ${tweet.length} characters; X limit is 280.`);
     }
 
-    const { data: tweeted } = await refreshedClient.v2.tweet(tweet);
+    const { data: tweeted } = await refreshedClient.v2.tweet(tweet).catch((error) => {
+        throw new Error(`X tweet creation failed for client ${clientId}: ${formatXError(error)}`);
+    });
 
     return tweeted;
 }
