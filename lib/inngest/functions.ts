@@ -1,7 +1,7 @@
-import axios from "axios";
 import parser from "cron-parser";
 
 import db from "@/lib/firestore";
+import { postTweetForClient } from "@/lib/tweet";
 
 import inngest from "./";
 
@@ -16,7 +16,7 @@ export const runTweet = inngest.createFunction(
 
         // 1) run the tweet now
         await step.run(`post-tweet-${clientId}`, async () => {
-            await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/tweet/${clientId}`);
+            await postTweetForClient(clientId);
         });
 
         // 2) load cron from Firestore (it may have changed)
