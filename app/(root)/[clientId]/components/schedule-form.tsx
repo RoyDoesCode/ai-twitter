@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -57,38 +59,36 @@ const ScheduleForm: React.FC<Client> = ({ id, cron, active }) => {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="max-w-[560px] flex flex-col justify-between p-8 w-full h-full gap-6"
+                className="space-y-4 w-full"
             >
-                <div className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="cron"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Cron Expression *</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="active"
-                        render={({ field }) => (
-                            <FormItem className="flex flex-col">
-                                <FormLabel>Active</FormLabel>
-                                <FormControl>
-                                    <Switch
-                                        checked={field.value}
-                                        onCheckedChange={field.onChange}
-                                    />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                </div>
+                <FormField
+                    control={form.control}
+                    name="cron"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Cron Expression *</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="active"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Active</FormLabel>
+                            <FormControl>
+                                <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
                 <Button type="submit" disabled={disabled} className="w-full h-10">
                     {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                     Update scheduling

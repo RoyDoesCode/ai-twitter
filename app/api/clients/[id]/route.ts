@@ -35,3 +35,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         return new NextResponse(error.message, { status: 500 });
     }
 }
+
+export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+    try {
+        await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/schedules/${params.id}`);
+        await db.doc(params.id).delete();
+        return NextResponse.json({ ok: true });
+    } catch (error: any) {
+        return new NextResponse(error.message, { status: 500 });
+    }
+}

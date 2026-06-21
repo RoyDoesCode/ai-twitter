@@ -1,10 +1,11 @@
 import React from "react";
 
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { Loader2 as LucideLoader } from "lucide-react"
 
 const Loader: React.FC = () => {
     return (
-        <ReloadIcon
+        <LucideLoader
             className="
                 absolute 
                 top-[calc(50%-0.5rem)] 

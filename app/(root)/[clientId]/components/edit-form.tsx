@@ -63,7 +63,7 @@ const EditForm: React.FC<Client> = ({ id, name, systemPrompt, userPrompt }) => {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="max-w-[560px] p-8 space-y-4 w-full"
+                className="space-y-4 w-full"
             >
                 <FormField
                     control={form.control}

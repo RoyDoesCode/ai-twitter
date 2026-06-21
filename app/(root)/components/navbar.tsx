@@ -1,24 +1,35 @@
 import Link from "next/link";
-import React from "react";
+import { Twitter } from "lucide-react";
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
     return (
-        <div className="fixed border-b w-screen p-4 bg-background">
-            <div className="relative flex justify-between items-center">
-                <h1 className="font-medium">AI Twitter</h1>
+        <header className="fixed top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+                <Link href="/" className="flex items-center gap-2.5 font-semibold text-foreground hover:opacity-80 transition-opacity">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary shadow-sm">
+                        <Twitter className="h-4 w-4 text-primary-foreground" />
+                    </div>
+                    <span>AI Twitter</span>
+                </Link>
 
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 space-x-8">
-                    <Link href="/" className="hover:underline underline-offset-2">
+                <nav className="flex items-center gap-1">
+                    <Link
+                        href="/"
+                        className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    >
                         Clients
                     </Link>
-                    <Link href="/register" className="hover:underline underline-offset-2">
+                    <Link
+                        href="/register"
+                        className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    >
                         Register
                     </Link>
-                </div>
+                </nav>
 
-                <p className="text-sm">by Roy Barzilay</p>
+                <p className="text-sm text-muted-foreground">by Roy Barzilay</p>
             </div>
-        </div>
+        </header>
     );
 };
 
