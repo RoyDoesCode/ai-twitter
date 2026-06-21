@@ -28,7 +28,7 @@ export const runTweet = inngest.createFunction(
         if (!cron) return; // user deleted schedule in the meantime
 
         // 3) compute next run & schedule the next execution
-        const nextTs = parser.parse(cron, { tz: "UTC" }).next().getTime();
+        const nextTs = parser.parse(cron, { tz: "Asia/Jerusalem" }).next().getTime();
 
         await step.run("schedule-next", async () => {
             await inngest.send({

@@ -9,8 +9,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     try {
         const { cron } = await req.json();
 
-        // compute next fire time (UTC)
-        const it = parser.parse(cron, { tz: "UTC" });
+        // compute next fire time in Israel local time
+        const it = parser.parse(cron, { tz: "Asia/Jerusalem" });
         const next = it.next().getTime(); // ms epoch
 
         // persist cron for future reschedules
