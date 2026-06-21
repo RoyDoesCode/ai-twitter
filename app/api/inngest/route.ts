@@ -3,6 +3,13 @@ import { serve } from "inngest/next";
 import inngest from "@/lib/inngest";
 import { runTweet } from "@/lib/inngest/functions";
 
-export const { GET, POST } = serve({ client: inngest, functions: [runTweet] });
+const serveOrigin = process.env.NEXT_PUBLIC_HOST?.replace(/\/$/, "");
+
+export const { GET, POST } = serve({
+    client: inngest,
+    functions: [runTweet],
+    serveOrigin,
+    servePath: "/api/inngest",
+});
 
 export const runtime = "nodejs";
