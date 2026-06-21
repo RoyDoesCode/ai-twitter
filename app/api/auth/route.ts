@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
         await db.doc(id).update({ codeVerifier, state });
 
-        return NextResponse.redirect(url);
+        return NextResponse.redirect(url.replace("https://twitter.com/", "https://x.com/"));
     } catch {
         return new NextResponse("[AUTH_GET] Internal Server Error", { status: 500 });
     }
