@@ -8,9 +8,9 @@ import inngest from "./";
 export const runTweet = inngest.createFunction(
     {
         id: "run-tweet",
+        triggers: [{ event: "tweet/scheduled" }],
         cancelOn: [{ event: "tweet/cancelled", match: "data.clientId" }],
     },
-    { event: "tweet/scheduled" },
     async ({ event, step }) => {
         const clientId = event.data.clientId as string;
 
